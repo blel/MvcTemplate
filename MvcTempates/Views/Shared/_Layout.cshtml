@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <nav>
+        <ul>
+            <li>@Html.ActionLink("About", "About", "Home")
+                <ul>
+                    <li>@Html.ActionLink("Employers", "Index", "Employer")</li>
+                    <li><a href="#">Submenu 2</a></li>
+                    <li><a href="#">Submenu 3</a></li>
+                    <li><a href="#">Submenu 4</a></li>
+                </ul>
+            </li>
+            <li>@Html.ActionLink("Index", "Index", "Home")</li>
+            <li><a href="#">Menu Item 3</a></li>
+          
+        </ul>
+    </nav>
+    @RenderBody()
+
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

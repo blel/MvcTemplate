@@ -1,0 +1,181 @@
+﻿body {
+    font-size: .85em;
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+    color: #232323;
+    background-color: #fff;
+}
+
+header, footer, nav, section {
+    display: block;
+}
+
+
+/* Styles for basic forms
+-----------------------------------------------------------*/
+fieldset {
+    border: 1px solid #ddd;
+    padding: 0 1.4em 1.4em 1.4em;
+    margin: 0 0 1.5em 0;
+}
+
+legend {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+textarea {
+    min-height: 75px;
+}
+
+.editor-label {
+    margin: 1em 0 0 0;
+}
+
+.editor-field {
+    margin: 0.5em 0 0 0;
+}
+
+
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error {
+    color: #f00;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.input-validation-error {
+    border: 1px solid #f00;
+    background-color: #fee;
+}
+
+.validation-summary-errors {
+    font-weight: bold;
+    color: #f00;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+/*BLEL: Menu
+-----------------------------------------------------------*/
+nav {
+	margin: 50px auto;
+    text-align: justify;
+}
+
+/*hauptmenu*/
+nav ul {
+	background: rgb(239, 239, 239);
+    list-style: none;
+    padding: 0px 20px; 
+    border-radius: 10px; 
+    display: flexbox;
+    position: relative; 
+    box-shadow: 0px 0px 9px rgba(0,0,0,0.15);
+}
+
+/*sinn nicht ganz klar*/
+nav ul::after {
+	clear: both; 
+    display: block; 
+    content: "";
+}
+
+/*anordnung des hauptmenus*/
+nav ul li {
+	float:left;
+}
+
+/*Hover effekt hauptmenu*/
+nav ul li:hover {
+	background: rgb(75, 84, 95);
+}
+
+/*Link Schrift: Hauptmenu*/
+nav ul li a {
+	padding: 25px 40px; 
+    color: rgb(117, 117, 117); 
+    text-decoration: none; 
+    display: block;
+}
+/*Link Schrift Hauptmenu: Hovereffekt*/
+nav ul li:hover a {
+	color: rgb(255, 255, 255);
+}
+
+
+/*Submenu block*/
+nav ul ul {
+    display: none;
+	background: rgb(95, 105, 117); 
+    padding: 0px; 
+    border-radius: 0px; 
+    top: 100%; 
+    position: absolute;
+}
+
+/*Submenu Item*/
+nav ul ul li {
+	border-top-color: rgb(107, 114, 124); 
+    border-bottom-color: rgb(87, 95, 106); 
+    border-top-width: 1px; 
+    border-bottom-width: 1px; 
+    border-top-style: solid; 
+    border-bottom-style: solid; 
+    float: none; 
+    position: relative;
+}
+
+/*Submenu Item Link*/
+nav ul ul li a {
+	padding: 15px 40px; 
+    color: rgb(255, 255, 255);
+}
+
+/*wird über ein li innerhalb von nav ul gefahren, soll der gerade unter dem 
+    li element liegende ul block (also das submenu) angezeigt werden*/
+nav ul li:hover > ul {
+	display: block;
+}
+
+/*2. Submenu*/
+nav ul ul li a:hover {
+	background: rgb(75, 84, 95);
+}
+nav ul ul ul {
+	left: 100%; 
+    top: 0px; 
+    position: absolute;
+}
+
+
+/*Tables*/
+
+.table-normal  th
+{
+    text-align : left;
+    background : rgb(117, 117, 117);
+    color : white;
+}
+
+.table-normal tr
+{
+    text-align : left;
+    background :rgb(239, 239, 239);
+    color: black;
+}
+
+    .table-normal tr a
+    {
+        text-decoration:none;
+    }
+        .table-normal tr a:hover
+        {
+            color: red;
+        }
+
+
