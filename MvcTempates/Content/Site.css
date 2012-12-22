@@ -63,7 +63,7 @@ textarea {
 /*BLEL: Menu
 -----------------------------------------------------------*/
 nav {
-	margin: 50px auto;
+	margin: 20px auto;
     text-align: justify;
 }
 
@@ -153,7 +153,8 @@ nav ul ul ul {
 }
 
 
-/*Tables*/
+/*Tables
+-----------------------------------------------------------*/
 
 .table-normal  th
 {
@@ -167,7 +168,14 @@ nav ul ul ul {
     text-align : left;
     background :rgb(239, 239, 239);
     color: black;
+    
 }
+
+    .table-normal tr td
+    {
+        cursor: pointer;
+    }
+
 
     .table-normal tr a
     {
@@ -177,5 +185,27 @@ nav ul ul ul {
         {
             color: red;
         }
+.table-normal tr:hover
+{
+    background-color:rgb(196, 158, 211)
+}
+
+
+/*Button
+-----------------------------------------------------------*/
+
+.button
+{
+    border-radius: 5px;
+    border-style:outset;
+    text-decoration:none;
+    border-color:#ddd;
+    background-color: #ddd;
+    color:black;
+    display: inline-block;
+    padding: 5px 10px;
+
+
+}
 
 

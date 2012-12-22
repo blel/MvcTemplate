@@ -6,12 +6,28 @@
 
 <h2>@ViewBag.Title</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+
 
 <!-- BLEL:Show table only if model contains any data. -->
 @if (Model.Count() > 0){
+    <table>
+        <tr>
+            <th>
+                Max. Records
+            </th>
+            <th style="text-align:left;">
+                <input id="maxRecords" value="100" style="width:50px;"/>
+            </th>
+            <th style="text-align:right;">
+                <input id="searchField" />
+            </th>
+            <th style="text-align:right;">
+                <a href="#" class="button">Search</a>
+            </th>
+        </tr>
+        <tr>  
+            <td colspan="4">
+    
 <table class="table-normal">
     
     <tr>
@@ -31,7 +47,7 @@
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
+    <tr id ="@item.ID">
         <td>
             @Html.DisplayFor(modelItem => item.CompanyName)
         </td>
@@ -45,12 +61,23 @@
             @Html.DisplayFor(modelItem => item.Place)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.ID })
         </td>
     </tr>
 }
 
-</table>
+</table></td>
+            </tr>
+    </table> 
 }
+<p>
+    @Html.ActionLink("Create New", "Create",null, new {@class = "button"})
+</p>
+
+<script>
+    //das scheint die art zu sein, wie in javascript ein link aufgerufen wird...
+    //dass das mit this.id funktioniert, ist schon erstaunlich...
+    $(".table-normal tr").click(function () {
+        window.location.href = "/Employer/Edit/"+this.id;
+    });
+</script>
