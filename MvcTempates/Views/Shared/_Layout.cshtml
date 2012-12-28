@@ -6,11 +6,12 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/themes/base/css")
-    @Scripts.Render("~/bundles/modernizr")
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryui")
 </head>
 <body>
+  
     <nav>
         <ul >
             <li>@Html.ActionLink("About", "About", "Home")
@@ -26,6 +27,7 @@
           
         </ul>
     </nav>
+
     @RenderBody()
 
     

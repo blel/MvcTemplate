@@ -99,6 +99,17 @@ namespace MvcTempates.Controllers
             return View(employer);
         }
 
+        public ActionResult Search(string txt)
+        {
+            var resultSet = db.Database.SqlQuery<Employer>(string.Format(@"SELECT * FROM dbo.Employers em 
+                                                                           INNER JOIN dbo.ftsEmployers('{0}') fte 
+                                                                           ON em.ID = fte.[Key]", txt),txt);
+                
+
+            return View();
+        }
+
+
         //
         // POST: /Employer/Delete/5
 
