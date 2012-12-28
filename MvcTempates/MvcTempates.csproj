@@ -233,6 +233,7 @@
     <Content Include="Views\Employer\Create.cshtml" />
     <Content Include="Views\Employer\Edit.cshtml" />
     <Content Include="Views\Employer\Delete.cshtml" />
+    <Content Include="Views\Employer\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

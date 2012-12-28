@@ -101,12 +101,15 @@ namespace MvcTempates.Controllers
 
         public ActionResult Search(string txt)
         {
-            var resultSet = db.Database.SqlQuery<Employer>(string.Format(@"SELECT * FROM dbo.Employers em 
+            if (txt != string.Empty)
+            {
+                var resultSet = db.Database.SqlQuery<Employer>(string.Format(@"SELECT * FROM dbo.Employers em 
                                                                            INNER JOIN dbo.ftsEmployers('{0}') fte 
-                                                                           ON em.ID = fte.[Key]", txt),txt);
-                
-
-            return View();
+                                                                           ON em.ID = fte.[Key]", txt), txt);
+                return PartialView(resultSet);
+            }
+            else
+                return PartialView(db.Employers.ToList());
         }
 
 
