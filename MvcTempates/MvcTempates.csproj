@@ -127,6 +127,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HtmlHelperExtensions\HideOnSearchListAttribute.cs" />
+    <Compile Include="HtmlHelperExtensions\HtmlHelperTable.cs" />
     <Compile Include="Migrations\201212202042316_InitialCreate.cs" />
     <Compile Include="Migrations\201212202042316_InitialCreate.Designer.cs">
       <DependentUpon>201212202042316_InitialCreate.cs</DependentUpon>

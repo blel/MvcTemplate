@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<MvcTempates.Models.Employer>
+@using MvcTempates.HtmlHelperExtensions
+
+
 
 @{
     ViewBag.Title = "Employers";
@@ -6,11 +9,11 @@
 
 <h2>@ViewBag.Title</h2>
 
-
+<p>@Html.Table(Model)</p>
 
 <!-- BLEL:Show table only if model contains any data. -->
 @if (Model.Count() > 0){
-    using (Ajax.BeginForm("Search", "Employer", null, new AjaxOptions() { UpdateTargetId = "ajaxContent" },null))
+    using (Ajax.BeginForm("Search", "Employer", null, new AjaxOptions() { UpdateTargetId = "ajaxContent" }, null))
     {
     <table>
         
@@ -43,7 +46,6 @@
             </td>
         </tr>
     </table> 
-    
     }
 }
 <p>

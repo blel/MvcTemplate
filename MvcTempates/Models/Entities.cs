@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Data.Entity;
 using System.ComponentModel.DataAnnotations;
+using MvcTempates.HtmlHelperExtensions;
+
 namespace MvcTempates.Models
 {
     public class Application
@@ -17,12 +19,18 @@ namespace MvcTempates.Models
 
     public class Employer
     {
+        [HideOnSearchList(true)]
         public int ID { get; set; }
+        [Display(Name = "Company Name")]
         public string CompanyName { get; set; }
         public string Street { get; set; }
+
+        [Display(Name="Zip Code")]
         public string ZipCode { get; set; }
         public string Place { get; set; }
+        [HideOnSearchList(true)]
         public  virtual ICollection<Application> Applications {get; set;}
+        [HideOnSearchList(true)]
         public ICollection<Person> Contacts { get; set; }
 
     }
