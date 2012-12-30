@@ -18,7 +18,7 @@ namespace MvcTempates.HtmlHelperExtensions
             {
                 if (typeof(T).GetProperty("ID") == null)
                     throw new Exception("The type you want to create a table of does not contain a property \"ID\".");
-                return new MvcHtmlString(GetTable<T>(items, GetPropertiesToShow<T>(), controller));
+                return new MvcHtmlString(GetSearchableTable<T>(items, GetPropertiesToShow<T>(), controller));
             }
             else
                 return new MvcHtmlString( string.Empty);
@@ -101,7 +101,26 @@ namespace MvcTempates.HtmlHelperExtensions
                    !property.GetCustomAttribute<HideOnSearchListAttribute>().HideOnSearchlist)
              select property).ToArray();
         }
-  
+
+        private static string GetSearchableTable<T>(IEnumerable<T> items, PropertyInfo[] propertiesToShow, string controller)
+        {
+            StringBuilder html = new StringBuilder();
+            html.AppendFormat("<form action=\"/{0}/Search\" data-ajax=\"true\" data-ajax-mode=\"replace\" data-ajax-update=\"#ajaxContent\" id=\"form0\" method=\"post\">",controller);
+            html.AppendLine("<table>");
+            html.AppendLine("\t<tr>");
+            html.AppendLine("\t\t<th style=\"text-align:left;\">Max. Records</th>");
+            html.AppendLine("\t\t<th style=\"text-align:left;\"> <input id=\"maxRecords\" value=\"100\" style=\"width:50px;\"/> </th>");
+            html.AppendLine("\t\t<th style=\"text-align:right;\"> <input id=\"searchField\" name=\"txt\"/> </th>");
+            html.AppendLine("\t\t<th style=\"text-align:right;\"> <input type=\"submit\" value=\"Search\"/> </th>");
+            html.AppendLine("\t</tr>");
+            html.AppendLine("\t<tr><td colspan=\"4\">");
+            html.AppendLine("\t\t<div id = \"ajaxContent\">");
+            html.Append(GetTable(items, propertiesToShow,controller));
+            html.AppendLine("\t\t</div></td>");
+            html.AppendLine("\t</tr>");
+            html.AppendLine("</table></form>");
+            return html.ToString();
+        }
 
     }
 
