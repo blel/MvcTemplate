@@ -9,7 +9,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-<p>@Html.Table(Model)</p>
+<p>@Html.Table(Model, "Employer")</p>
 
 <!-- BLEL:Show table only if model contains any data. -->
 @if (Model.Count() > 0){
