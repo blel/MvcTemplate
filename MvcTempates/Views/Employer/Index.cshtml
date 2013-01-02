@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<MvcTempates.Models.Employer>
 @using MvcTempates.HtmlHelperExtensions
+@using PagedList;
+@using PagedList.Mvc;
 
 
 
@@ -9,7 +11,8 @@
 
 <h2>@ViewBag.Title</h2>
 
-<p>@Html.Table(Model, "Employer")</p>
+@Html.Table(Model, "Employer")
+@Html.PagedListPager((IPagedList)Model, selectedPage => Url.Action("/Paging", new { page = selectedPage }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing("#ajaxContent"));
 
 <!-- BLEL:Show table only if model contains any data. -->
 @if (Model.Count() > 0){
