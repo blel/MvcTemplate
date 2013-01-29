@@ -1,0 +1,42 @@
+﻿@model IEnumerable<MvcTempates.Models.Employer>
+
+<table class="table-normal">
+    
+            <tr>
+                <th>
+                    @Html.DisplayName("Company Name")
+                </th>
+                <th>
+                    @Html.DisplayName("Street")
+                </th>
+                <th>
+                    @Html.DisplayName("Zip Code")
+                </th>
+                <th>
+                    @Html.DisplayName("Place")
+                </th>
+                <th>Actions</th>
+            </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr id ="@item.ID">
+                <td>
+                    @Html.DisplayFor(modelItem => item.CompanyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Street)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ZipCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Place)
+                </td>
+                <td>
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                </td>
+            </tr>
+        }
+        </table>
+    

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using MvcTempates.Models;
+using PagedList;
 
 namespace MvcTempates.Controllers
 {
@@ -18,9 +19,15 @@ namespace MvcTempates.Controllers
 
         public ActionResult Index()
         {
-            return View(db.Employers.ToList());
+            return View(db.Employers.OrderBy(cc => cc.ID).ToPagedList(1, 3));
         }
 
+        
+        public ActionResult Paging(int page)
+        {
+            if (page == 0) page = 1;
+            return PartialView(db.Employers.OrderBy(cc => cc.ID).ToPagedList(page, 3));
+        }
         //
         // GET: /Employer/Details/5
 
@@ -98,6 +105,20 @@ namespace MvcTempates.Controllers
             }
             return View(employer);
         }
+
+        public ActionResult Search(string txt)
+        {
+            if (txt != string.Empty)
+            {
+                var resultSet = db.Database.SqlQuery<Employer>(string.Format(@"SELECT * FROM dbo.Employers em 
+                                                                           INNER JOIN dbo.ftsEmployers('{0}') fte 
+                                                                           ON em.ID = fte.[Key]", txt), txt);
+                return PartialView(resultSet);
+            }
+            else
+                return PartialView(db.Employers.ToList());
+        }
+
 
         //
         // POST: /Employer/Delete/5
