@@ -19,18 +19,44 @@ namespace MvcTempates.Controllers
 
         public ActionResult Index()
         {
-            return View(db.Employers.OrderBy(cc => cc.ID).ToPagedList(1, 3));
+            var model = new EmployerSearchViewModel();
+            model.ResultSet = db.Employers.OrderBy(cc => cc.ID).ToPagedList(1, 3);
+            model.RequestedPage = 1;
+            model.MaxSearchResult = 100;
+            return View(model);
+        }
+
+        public ActionResult Refresh(EmployerSearchViewModel esvm)
+        {
+            if (esvm.SearchText != string.Empty && esvm.SearchText != null)
+            {
+                esvm.ResultSet = db.Database.SqlQuery<Employer>(string.Format(@"SELECT * FROM dbo.Employers em 
+                                                                           INNER JOIN dbo.ftsEmployers('{0}') fte 
+                                                                           ON em.ID = fte.[Key]", esvm.SearchText), esvm.SearchText);
+            }
+            else
+            {
+                esvm.ResultSet = db.Employers;
+            }
+
+            switch (esvm.TableAction)
+            {
+                case HtmlHelperExtensions.TableActions.Page:
+                    break;
+                case HtmlHelperExtensions.TableActions.Search:
+                    esvm.RequestedPage = 1;
+                    break;
+                case HtmlHelperExtensions.TableActions.Sort:
+                    break;
+                default:
+                    break;
+            }
+            esvm.ResultSet = esvm.ResultSet.OrderBy(cc => cc.ID).ToPagedList(esvm.RequestedPage, 3);
+
+            return PartialView(esvm);
         }
 
         
-        public ActionResult Paging(int page)
-        {
-            if (page == 0) page = 1;
-            return PartialView(db.Employers.OrderBy(cc => cc.ID).ToPagedList(page, 3));
-        }
-        //
-        // GET: /Employer/Details/5
-
         public ActionResult Details(int id = 0)
         {
             Employer employer = db.Employers.Find(id);
@@ -106,18 +132,7 @@ namespace MvcTempates.Controllers
             return View(employer);
         }
 
-        public ActionResult Search(string txt)
-        {
-            if (txt != string.Empty)
-            {
-                var resultSet = db.Database.SqlQuery<Employer>(string.Format(@"SELECT * FROM dbo.Employers em 
-                                                                           INNER JOIN dbo.ftsEmployers('{0}') fte 
-                                                                           ON em.ID = fte.[Key]", txt), txt);
-                return PartialView(resultSet);
-            }
-            else
-                return PartialView(db.Employers.ToList());
-        }
+
 
 
         //

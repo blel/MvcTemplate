@@ -144,6 +144,7 @@
       <DependentUpon>201212202102351_SomeFirstChanges.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\EmployerSearchViewModel.cs" />
     <Compile Include="Models\Entities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -242,8 +243,7 @@
     <Content Include="Views\Employer\Create.cshtml" />
     <Content Include="Views\Employer\Edit.cshtml" />
     <Content Include="Views\Employer\Delete.cshtml" />
-    <Content Include="Views\Employer\Search.cshtml" />
-    <Content Include="Views\Employer\Paging.cshtml" />
+    <Content Include="Views\Employer\Refresh.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
