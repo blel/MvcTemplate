@@ -111,6 +111,11 @@ namespace MvcTempates.Controllers
             return RedirectToAction("Index");
         }
 
+        //public ActionResult Search(string fulltext)
+        //{
+        //}
+
+
         protected override void Dispose(bool disposing)
         {
             db.Dispose();
