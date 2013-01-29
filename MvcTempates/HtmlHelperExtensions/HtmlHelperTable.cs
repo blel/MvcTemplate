@@ -83,11 +83,11 @@ namespace MvcTempates.HtmlHelperExtensions
                 sb.Append(GetTableRow<T>(listitem, propertiesToShow, controller));
             }
             table.InnerHtml = sb.ToString();
-
+            //Script that calls the edit screen if the current tr has a valid id
             TagBuilder tbScript = new TagBuilder("script");
             tbScript.MergeAttribute("type", "text/javascript");
-            tbScript.InnerHtml = "$(\".table-normal tr\").click(function () { window.location.href = \"/"
-                                    +controller +"/Edit/\"+this.id;});";
+            tbScript.InnerHtml = "$(\".table-normal tr\").click(function () { if (this.id != null && this.id !=\"\") { window.location.href = \"/"
+                                    +controller +"/Edit/\"+this.id;}});";
             return table.ToString(TagRenderMode.Normal) + tbScript.ToString() ; 
         }
 
@@ -133,6 +133,8 @@ namespace MvcTempates.HtmlHelperExtensions
             foreach (var item in propertiesToShow)
             {
                 TagBuilder tb = new TagBuilder("th");
+                //used for sorting
+                tb.Attributes.Add(new KeyValuePair<string,string>("id", item.Name));
                 if (item.GetCustomAttribute<DisplayAttribute>() != null &&
                     item.GetCustomAttribute<DisplayAttribute>().GetName() != string.Empty)
                 {
