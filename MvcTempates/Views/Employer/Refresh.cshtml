@@ -1,0 +1,8 @@
+﻿@model MvcTempates.Models.EmployerSearchViewModel
+@using MvcTempates.HtmlHelperExtensions
+@using PagedList;
+@using PagedList.Mvc;
+
+@Html.Table(Model.ResultSet, "Employer")
+@Html.PagedListPager((IPagedList)Model.ResultSet, selectedPage => Url.Action("/Refresh", new { RequestedPage = selectedPage, SearchText = Model.SearchText, TableAction = TableActions.Page }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing("#ajaxContent"))
+

@@ -1,9 +1,0 @@
-﻿@model IEnumerable<MvcTempates.Models.Employer>
-@using MvcTempates.HtmlHelperExtensions
-@using PagedList;
-@using PagedList.Mvc;
-
-
-@Html.Table(Model, "Employer")
-@Html.PagedListPager((IPagedList)Model, selectedPage => Url.Action("/Paging", new { page = selectedPage }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing("#ajaxContent"));
-<p>Das ist nur ein Test, um zu schauen, ob die richtige Seite angezeigt wird.</p>
