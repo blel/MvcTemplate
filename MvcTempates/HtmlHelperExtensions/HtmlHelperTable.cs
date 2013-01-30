@@ -88,7 +88,12 @@ namespace MvcTempates.HtmlHelperExtensions
             tbScript.MergeAttribute("type", "text/javascript");
             tbScript.InnerHtml = "$(\".table-normal tr\").click(function () { if (this.id != null && this.id !=\"\") { window.location.href = \"/"
                                     +controller +"/Edit/\"+this.id;}});";
-            return table.ToString(TagRenderMode.Normal) + tbScript.ToString() ; 
+            //Script for sorting order
+            TagBuilder sortingOrderScript = new TagBuilder("script");
+            sortingOrderScript.MergeAttribute("type", "text/javascript");
+            sortingOrderScript.InnerHtml = "$(\".table-normal tr th\").click(function () { if (this.id != null && this.id !=\"\") { window.location.href = \"/"
+                        + controller + string.Format("/Refresh?TableAction={0}&SortedColumn={1}&SortDirection={2}", TableActions.Sort, "\"+this.id+\"", SortDirection.Ascending) + "\";}});";
+            return table.ToString(TagRenderMode.Normal) + tbScript.ToString() + sortingOrderScript.ToString() ; 
         }
 
         /// <summary>
@@ -185,15 +190,15 @@ namespace MvcTempates.HtmlHelperExtensions
             html.AppendLine("\t\t<th style=\"text-align:left;\">Max. Records</th>");
             html.AppendLine("\t\t<th style=\"text-align:left;\"> <input id=\"maxRecords\" value=\"100\" style=\"width:50px;\"/> </th>");
             html.AppendLine("\t\t<th style=\"text-align:right;\"> <input id=\"searchField\" name=\"SearchText\"/> </th>");
-            //add hidden field to set the TableAction = Search
+            //add hidden field to set the TableAction = Search when Searchbutton is clicked
             html.AppendLine("\t\t<input type=\"hidden\" name=\"TableAction\" value = \"Search\">");
             html.AppendLine("\t\t<th style=\"text-align:right;\"> <input type=\"submit\" value=\"Search\"/> </th>");
             html.AppendLine("\t</tr>");
             html.AppendLine("\t<tr><td colspan=\"4\">");
             html.AppendLine("\t\t<div id = \"ajaxContent\">");
             html.Append(GetTable(items, propertiesToShow,controller));
-            html.Append(helper.PagedListPager((IPagedList)items, selectedPage => (string.Format("{0}/Refresh?RequestedPage={1}&SearchText={2}&TableAction={3}", controller, selectedPage, new ViewDataDictionary ().Eval("searchField"), TableActions.Page)), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing("#ajaxContent")));
-           
+            html.Append(helper.PagedListPager((IPagedList)items, selectedPage => (string.Format("{0}/Refresh?RequestedPage={1}&SearchText={2}&TableAction={3}",
+                controller, selectedPage, new ViewDataDictionary ().Eval("searchField"), TableActions.Page)), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing("#ajaxContent"))); 
             html.AppendLine("\t\t</div></td>");
             html.AppendLine("\t</tr>");
             html.AppendLine("</table></form>");
@@ -208,4 +213,10 @@ namespace MvcTempates.HtmlHelperExtensions
     {
         Search, Page, Sort
     }
+
+    public enum SortDirection
+    {
+        Ascending, Descending
+    }
+
 }

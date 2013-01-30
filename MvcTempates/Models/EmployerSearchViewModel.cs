@@ -11,6 +11,8 @@ namespace MvcTempates.Models
         public string SearchText { get; set; }
         public int MaxSearchResult { get; set; }
         public int RequestedPage { get; set; }
+        public string SortedColumn { get; set; }
+        public HtmlHelperExtensions.SortDirection SortDirection { get; set; }
         public HtmlHelperExtensions.TableActions TableAction { get; set; }
 
 

@@ -42,20 +42,29 @@ namespace MvcTempates.Controllers
             switch (esvm.TableAction)
             {
                 case HtmlHelperExtensions.TableActions.Page:
+                    esvm.ResultSet = esvm.ResultSet.OrderBy(cc => cc.ID).ToPagedList(esvm.RequestedPage, 3);
                     break;
                 case HtmlHelperExtensions.TableActions.Search:
                     esvm.RequestedPage = 1;
+                    esvm.ResultSet = esvm.ResultSet.OrderBy(cc => cc.ID).ToPagedList(esvm.RequestedPage, 3);
                     break;
                 case HtmlHelperExtensions.TableActions.Sort:
+                    esvm.RequestedPage = 1;
+                    esvm.ResultSet = esvm.ResultSet.OrderBy(cc=>(GetPropertyValue(cc,esvm.SortedColumn))).ToPagedList(esvm.RequestedPage, 3);
                     break;
                 default:
                     break;
             }
-            esvm.ResultSet = esvm.ResultSet.OrderBy(cc => cc.ID).ToPagedList(esvm.RequestedPage, 3);
+            
 
             return PartialView(esvm);
         }
 
+        private static object GetPropertyValue(object obj, string property)
+        {
+            System.Reflection.PropertyInfo propertyInfo = obj.GetType().GetProperty(property);
+            return propertyInfo.GetValue(obj, null);
+        }
         
         public ActionResult Details(int id = 0)
         {
