@@ -91,8 +91,13 @@ namespace MvcTempates.HtmlHelperExtensions
             //Script for sorting order
             TagBuilder sortingOrderScript = new TagBuilder("script");
             sortingOrderScript.MergeAttribute("type", "text/javascript");
-            sortingOrderScript.InnerHtml = "$(\".table-normal tr th\").click(function () { if (this.id != null && this.id !=\"\") { window.location.href = \"/"
-                        + controller + string.Format("/Refresh?TableAction={0}&SortedColumn={1}&SortDirection={2}", TableActions.Sort, "\"+this.id+\"", SortDirection.Ascending) + "\";}});";
+            sortingOrderScript.InnerHtml = @"$("".table-normal tr th"").click(function () 
+                                                {
+                                                    if (this.id != null && this.id !="""")
+                                                    {
+                                                        
+                                                        $(""#ajaxContent"").html(""<p>nothing</p>"").load(""/" + controller + string.Format("/Refresh?TableAction={0}&SortedColumn={1}&SortDirection={2}", TableActions.Sort, "\"+this.id+\"", SortDirection.Ascending)
+                                                                                                                 + "\");}});";
             return table.ToString(TagRenderMode.Normal) + tbScript.ToString() + sortingOrderScript.ToString() ; 
         }
 
