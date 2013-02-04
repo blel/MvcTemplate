@@ -11,7 +11,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-@Html.TableWithSearchField(Model.ResultSet, "Employer")
+@Html.TableWithSearchField(Model.ResultSet, "Employer", Model.CurrentSortedColumn, Model.SortedColumn, Model.SortDirection)
 
 <p>
     @Html.ActionLink("Create New", "Create",null, new {@class = "button"})

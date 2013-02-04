@@ -47,7 +47,7 @@ namespace MvcTempates.Controllers
             switch (esvm.TableAction)
             {
                 case HtmlHelperExtensions.TableActions.Page:
-                    esvm.ResultSet = esvm.ResultSet.OrderBy(cc => cc.ID).ToPagedList(esvm.RequestedPage, 3);
+                    esvm.ResultSet = getSortedList(esvm, out sortedColumn, out currentSortedColumn, out sortDirection).ToPagedList(esvm.RequestedPage, 3);
                     break;
                 case HtmlHelperExtensions.TableActions.Search:
                     esvm.RequestedPage = 1;
@@ -87,9 +87,9 @@ namespace MvcTempates.Controllers
                     sortedColumn = null;
                     sortDirection = esvm.SortDirection;
                     if (esvm.SortDirection == HtmlHelperExtensions.SortDirection.Ascending || esvm.SortDirection == null)
-                        return esvm.ResultSet.OrderBy(cc => (GetPropertyValue(cc, esvm.SortedColumn)));
+                        return esvm.ResultSet.OrderBy(cc => (GetPropertyValue(cc, esvm.CurrentSortedColumn)));
                     else
-                        return esvm.ResultSet.OrderByDescending(cc => (GetPropertyValue(cc, esvm.SortedColumn)));
+                        return esvm.ResultSet.OrderByDescending(cc => (GetPropertyValue(cc, esvm.CurrentSortedColumn)));
                 }
 
             }

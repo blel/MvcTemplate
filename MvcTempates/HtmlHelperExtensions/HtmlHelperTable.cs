@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations;
 using PagedList;
@@ -31,13 +32,13 @@ namespace MvcTempates.HtmlHelperExtensions
         /// <param name="items">The items of which the list shall be created for</param>
         /// <param name="controller"></param>
         /// <returns>Html String containing the paged list</returns>
-        public static MvcHtmlString TableWithSearchField<T>(this System.Web.Mvc.HtmlHelper helper, IEnumerable<T> items, string controller)
+        public static MvcHtmlString TableWithSearchField<T>(this System.Web.Mvc.HtmlHelper helper, IEnumerable<T> items, string controller, string currentSortedColumn, string sortedColumn, SortDirection sortDirection)
         {
             if (items != null && items.Count() > 0)
             {
                 if (typeof(T).GetProperty("ID") == null)
                     throw new Exception("The type you want to create a table of does not contain a property \"ID\".");
-                return new MvcHtmlString(GetSearchableTable<T>(helper, items, GetPropertiesToShow<T>(), controller));
+                return new MvcHtmlString(GetSearchableTable<T>(helper, items, GetPropertiesToShow<T>(), controller, currentSortedColumn,sortedColumn,sortDirection));
             }
             else
                 return new MvcHtmlString( string.Empty);
@@ -52,13 +53,13 @@ namespace MvcTempates.HtmlHelperExtensions
         /// <param name="items">The items</param>
         /// <param name="controller">the controller, needed for the details link</param>
         /// <returns></returns>
-        public static MvcHtmlString Table<T>(this System.Web.Mvc.HtmlHelper helper, IEnumerable<T> items, string controller)
+        public static MvcHtmlString Table<T>(this System.Web.Mvc.HtmlHelper helper, IEnumerable<T> items, string controller, string currentSortedColumn, string sortedColumn, SortDirection sortDirection)
         {
             if (items != null && items.Count() > 0)
             {
                 if (typeof(T).GetProperty("ID") == null)
                     throw new Exception("The type you want to create a table of does not contain a property \"ID\".");
-                return new MvcHtmlString(GetTable<T>(items, GetPropertiesToShow<T>(), controller));
+                return new MvcHtmlString(GetTable<T>(items, GetPropertiesToShow<T>(), controller, currentSortedColumn,sortedColumn,sortDirection));
             }
             else
                 return new MvcHtmlString(string.Empty);
@@ -72,7 +73,7 @@ namespace MvcTempates.HtmlHelperExtensions
         /// <param name="propertiesToShow"></param>
         /// <param name="controller"></param>
         /// <returns></returns>
-        private static string GetTable<T>(IEnumerable<T> items, PropertyInfo[] propertiesToShow, string controller)
+        private static string GetTable<T>(IEnumerable<T> items, PropertyInfo[] propertiesToShow, string controller, string currentSortedColumn, string sortedColumn, SortDirection sortDirection)
         {
             TagBuilder table = new TagBuilder("table");
             table.AddCssClass("table-normal");
@@ -96,7 +97,8 @@ namespace MvcTempates.HtmlHelperExtensions
                                                     if (this.id != null && this.id !="""")
                                                     {
                                                         
-                                                        $(""#ajaxContent"").html(""<p>nothing</p>"").load(""/" + controller + string.Format("/Refresh?TableAction={0}&SortedColumn={1}&SortDirection={2}", TableActions.Sort, "\"+this.id+\"", SortDirection.Ascending)
+                                                        $(""#ajaxContent"").html(""<p>nothing</p>"").load(""/" + controller + string.Format("/Refresh?TableAction={0}&SortedColumn={1}&SortDirection={2}&currentSortedColumn={3}",
+                                                                                                               TableActions.Sort, "\"+this.id+\"", sortDirection, currentSortedColumn)
                                                                                                                  + "\");}});";
             return table.ToString(TagRenderMode.Normal) + tbScript.ToString() + sortingOrderScript.ToString() ; 
         }
@@ -186,7 +188,7 @@ namespace MvcTempates.HtmlHelperExtensions
         /// <param name="propertiesToShow"></param>
         /// <param name="controller"></param>
         /// <returns></returns>
-        private static string GetSearchableTable<T>(System.Web.Mvc.HtmlHelper helper, IEnumerable<T> items, PropertyInfo[] propertiesToShow, string controller)
+        private static string GetSearchableTable<T>(System.Web.Mvc.HtmlHelper helper, IEnumerable<T> items, PropertyInfo[] propertiesToShow, string controller, string currentSortedColumn, string sortedColumn, SortDirection sortDirection)
         {
             StringBuilder html = new StringBuilder();
             html.AppendFormat("<form action=\"/{0}/Refresh\" data-ajax=\"true\" data-ajax-mode=\"replace\" data-ajax-update=\"#ajaxContent\" id=\"form0\" method=\"post\">",controller);
@@ -201,13 +203,20 @@ namespace MvcTempates.HtmlHelperExtensions
             html.AppendLine("\t</tr>");
             html.AppendLine("\t<tr><td colspan=\"4\">");
             html.AppendLine("\t\t<div id = \"ajaxContent\">");
-            html.Append(GetTable(items, propertiesToShow,controller));
-            html.Append(helper.PagedListPager((IPagedList)items, selectedPage => (string.Format("{0}/Refresh?RequestedPage={1}&SearchText={2}&TableAction={3}",
-                controller, selectedPage, new ViewDataDictionary ().Eval("searchField"), TableActions.Page)), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing("#ajaxContent"))); 
+            html.Append(GetTable(items, propertiesToShow,controller, currentSortedColumn,sortedColumn,sortDirection));
+            var urlHelper = new UrlHelper(helper.ViewContext.RequestContext);
+            html.Append(helper.PagedListPager((IPagedList)items, selectedPage=> urlHelper.Action("Refresh", new RouteValueDictionary(){{"RequestedPage", selectedPage},
+                                                                                                                                       {"TableAction", TableActions.Page},
+                                                                                                                                       {"SearchText",  new ViewDataDictionary ().Eval("searchField")},
+                                                                                                                                       {"SortedColumn", sortedColumn },
+                                                                                                                                       {"SortDirection", sortDirection},
+                                                                                                                                       {"CurrentSortedColumn", currentSortedColumn}})
+                , PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing("#ajaxContent"))); 
             html.AppendLine("\t\t</div></td>");
             html.AppendLine("\t</tr>");
             html.AppendLine("</table></form>");
-            
+            //selectedPage => (string.Format("{0}/Refresh?RequestedPage={1}&SearchText={2}&TableAction={3}&SortedColumn={4}&SortDirection={5}&currentSortedColumn={6}",
+            //    controller, selectedPage, new ViewDataDictionary ().Eval("searchField"), TableActions.Page, currentSortedColumn, sortedColumn, sortDirection))
             
             return html.ToString();
         }

@@ -3,6 +3,6 @@
 @using PagedList;
 @using PagedList.Mvc;
 
-@Html.Table(Model.ResultSet, "Employer")
-@Html.PagedListPager((IPagedList)Model.ResultSet, selectedPage => Url.Action("/Refresh", new { RequestedPage = selectedPage, SearchText = Model.SearchText, TableAction = TableActions.Page }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing("#ajaxContent"))
+@Html.Table(Model.ResultSet, "Employer", Model.CurrentSortedColumn, Model.SortedColumn, Model.SortDirection)
+@Html.PagedListPager((IPagedList)Model.ResultSet, selectedPage => Url.Action("/Refresh", new { RequestedPage = selectedPage, SearchText = Model.SearchText, TableAction = TableActions.Page, SortedColumn = Model.SortedColumn, CurrentSortedColumn = Model.CurrentSortedColumn, SortDirection = Model.SortDirection  }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing("#ajaxContent"))
 
